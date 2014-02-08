@@ -1,0 +1,8 @@
+downloads
+downloads/*
+*.log
+*.pyc
+downloaders/*.pyc
+.idea
+.idea/*
+*~
