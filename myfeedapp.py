@@ -2,6 +2,7 @@ import logging
 import logging.config
 import os
 import os.path
+import argparse
 import settings
 import feed_processor
 import downloaders.base
@@ -15,7 +16,9 @@ class MyFeedApp():
         self._download_location = None
 
     def _handle_path(self):
-        self._download_location = settings.options['download_dir']
+        if self._download_location is None:
+            logger.info('Using default download location.')
+            self._download_location = settings.options['download_dir']
 
         logger.debug('Download location is: {0}'.format(self._download_location))
 
@@ -59,6 +62,15 @@ class MyFeedApp():
         """
         logger.info('Starting application...')
 
+        parser = argparse.ArgumentParser()
+        parser.add_argument('feed', help='URL of the feed from which each item will be downloaded.')
+        parser.add_argument('-o', '--output', help='Output directory where downloads will be saved.')
+
+        args = parser.parse_args()
+
+        if args.output:
+            self._download_location = args.output
+
         try:
             self._handle_path()
         except Exception as e:
@@ -66,7 +78,8 @@ class MyFeedApp():
             return
 
         try:
-            feed_path = self._download_single_file(settings.options['feed_url'])
+            logger.info('Using feed URL: {}'.format(args.feed))
+            feed_path = self._download_single_file(args.feed)
         except Exception as e:
             logger.fatal('Exception while downloading feed: {0}'.format(e))
             print('Halting, failed to download feed. Check log.')

@@ -41,6 +41,7 @@ class HttpFtpDownloader(downloaders.base.BaseDownloader):
 
         #c.setopt(pycurl.VERBOSE, 1)
         c.setopt(pycurl.NOPROGRESS, 0)
+        c.setopt(pycurl.PROGRESSFUNCTION, lambda total, existing, upload_t, upload_d: None)
         try:
             logger.info('Starting downloading {0} to {1}'.format(
                 url, filename
