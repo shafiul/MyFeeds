@@ -84,7 +84,7 @@ class MyFeedApp():
             logger.debug('Calculated new abspath: {0}'.format(self.download_location))
 
         if not os.path.exists(self.download_location):
-            logger.warn('Path {0} does not exist! Trying to create', format(self.download_location))
+            logger.warn('Path {0} does not exist! Trying to create'.format(self.download_location))
             os.makedirs(self.download_location)
         else:
             if not os.path.isdir(self.download_location):
